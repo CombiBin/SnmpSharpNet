@@ -91,7 +91,7 @@ namespace SnmpSharpNet
 			byte[] encryptedData = null;
 			try
 			{
-				TripleDES tdes = new TripleDESCryptoServiceProvider();
+				using TripleDES tdes = new TripleDESCryptoServiceProvider();
 				tdes.Mode = CipherMode.CBC;
 				tdes.Padding = PaddingMode.None;
 				// normalize key - generated key is 32 bytes long, we need 24 bytes to encrypt
@@ -147,7 +147,7 @@ namespace SnmpSharpNet
 			byte[] decryptedData = null;
 			try
 			{
-				TripleDES tdes = new TripleDESCryptoServiceProvider();
+				using TripleDES tdes = new TripleDESCryptoServiceProvider();
 				tdes.Mode = CipherMode.CBC;
 				tdes.Padding = PaddingMode.None;
 

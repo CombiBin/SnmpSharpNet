@@ -43,7 +43,7 @@ namespace SnmpSharpNet
 		{
 			byte[] result = new byte[authenticationLength];
 			byte[] authKey = PasswordToKey(authenticationSecret, engineId);
-			HMACSHA256 sha = new HMACSHA256(authKey);
+			using HMACSHA256 sha = new HMACSHA256(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			for (int i = 0; i < authenticationLength; i++)
@@ -63,7 +63,7 @@ namespace SnmpSharpNet
 		{
 			byte[] result = new byte[authenticationLength];
 
-			HMACSHA256 sha = new HMACSHA256(authKey);
+			using HMACSHA256 sha = new HMACSHA256(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			for (int i = 0; i < authenticationLength; i++)
@@ -86,7 +86,7 @@ namespace SnmpSharpNet
 		public bool authenticateIncomingMsg(byte[] userPassword, byte[] engineId, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
 			byte[] authKey = PasswordToKey(userPassword, engineId);
-			HMACSHA256 sha = new HMACSHA256(authKey);
+			using HMACSHA256 sha = new HMACSHA256(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			sha.Clear(); // release resources
@@ -105,7 +105,7 @@ namespace SnmpSharpNet
 		/// <returns>True on authentication success, otherwise false</returns>
 		public bool authenticateIncomingMsg(byte[] authKey, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
-			HMACSHA256 sha = new HMACSHA256(authKey);
+			using HMACSHA256 sha = new HMACSHA256(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			sha.Clear(); // release resources
@@ -190,7 +190,7 @@ namespace SnmpSharpNet
 		/// <returns>Hash value</returns>
 		public byte[] ComputeHash(byte[] data, int offset, int count)
 		{
-			SHA256 sha = new SHA256CryptoServiceProvider();
+			using SHA256 sha = new SHA256CryptoServiceProvider();
 			byte[] res = sha.ComputeHash(data, offset, count);
 			sha.Clear();
 			return res;

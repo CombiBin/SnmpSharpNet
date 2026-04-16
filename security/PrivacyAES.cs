@@ -106,7 +106,7 @@ namespace SnmpSharpNet
 			// Copy salt value to the iv array
 			Buffer.BlockCopy(privacyParameters, 0, iv, 8, 8);
 
-			Rijndael rm = new RijndaelManaged();
+			using Rijndael rm = new RijndaelManaged();
 			rm.KeySize = _keyBytes * 8;
 			rm.FeedbackSize = 128;
 			rm.BlockSize = 128;
@@ -166,7 +166,7 @@ namespace SnmpSharpNet
 			byte[] decryptedData = null;
 
 			// now do CFB decryption of the encrypted data
-			Rijndael rm = Rijndael.Create();
+			using Rijndael rm = Rijndael.Create();
 			rm.KeySize = _keyBytes * 8;
 			rm.FeedbackSize = 128;
 			rm.BlockSize = 128;

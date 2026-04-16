@@ -44,7 +44,7 @@ namespace SnmpSharpNet
 		{
 			byte[] result = new byte[authenticationLength];
 			byte[] authKey = PasswordToKey(authenticationSecret, engineId);
-			HMACMD5 md5 = new HMACMD5(authKey);
+			using HMACMD5 md5 = new HMACMD5(authKey);
 			byte[] hash = md5.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			Buffer.BlockCopy(hash, 0, result, 0, authenticationLength);
@@ -60,7 +60,7 @@ namespace SnmpSharpNet
 		public byte[] authenticate(byte[] authKey, byte[] wholeMessage)
 		{
 			byte[] result = new byte[authenticationLength];
-			HMACMD5 md5 = new HMACMD5(authKey);
+			using HMACMD5 md5 = new HMACMD5(authKey);
 			byte[] hash = md5.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			Buffer.BlockCopy(hash, 0, result, 0, authenticationLength);
@@ -80,7 +80,7 @@ namespace SnmpSharpNet
 		public bool authenticateIncomingMsg(byte[] userPassword, byte[] engineId, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
 			byte[] authKey = PasswordToKey(userPassword, engineId);
-			HMACMD5 md5 = new HMACMD5(authKey);
+			using HMACMD5 md5 = new HMACMD5(authKey);
 			byte[] hash = md5.ComputeHash(wholeMessage, 0, wholeMessage.Length);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			if (myhash.Equals(authenticationParameters))
@@ -98,7 +98,7 @@ namespace SnmpSharpNet
 		/// <returns>True on authentication success, otherwise false</returns>
 		public bool authenticateIncomingMsg(byte[] authKey, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
-			HMACMD5 md5 = new HMACMD5(authKey);
+			using HMACMD5 md5 = new HMACMD5(authKey);
 			byte[] hash = md5.ComputeHash(wholeMessage, 0, wholeMessage.Length);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			if (myhash.Equals(authenticationParameters))
@@ -122,7 +122,7 @@ namespace SnmpSharpNet
 
 			int password_index = 0;
 			int count = 0;
-			MD5 md5 = new MD5CryptoServiceProvider();
+			using MD5 md5 = new MD5CryptoServiceProvider();
 
 			byte[] sourceBuffer = new byte[1048576];
 			byte[] buf = new byte[64];
@@ -179,7 +179,7 @@ namespace SnmpSharpNet
 		/// <returns>Hash value</returns>
 		public byte[] ComputeHash(byte[] data, int offset, int count)
 		{
-			MD5 md5 = new MD5CryptoServiceProvider();
+			using MD5 md5 = new MD5CryptoServiceProvider();
 			byte[] res = md5.ComputeHash(data, offset, count);
 			md5.Clear();
 			return res;

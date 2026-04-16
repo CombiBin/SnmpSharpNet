@@ -42,7 +42,7 @@ namespace SnmpSharpNet
 		{
 			byte[] result = new byte[authenticationLength];
 			byte[] authKey = PasswordToKey(authenticationSecret, engineId);
-			HMACSHA512 sha = new HMACSHA512(authKey);
+			using HMACSHA512 sha = new HMACSHA512(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			for (int i = 0; i < authenticationLength; i++)
@@ -62,7 +62,7 @@ namespace SnmpSharpNet
 		{
 			byte[] result = new byte[authenticationLength];
 		
-			HMACSHA512 sha = new HMACSHA512(authKey);
+			using HMACSHA512 sha = new HMACSHA512(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			// copy "authentication lenght" bytes of the hash into the wholeMessage
 			for (int i = 0; i < authenticationLength; i++)
@@ -85,7 +85,7 @@ namespace SnmpSharpNet
 		public bool authenticateIncomingMsg(byte[] userPassword, byte[] engineId, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
 			byte[] authKey = PasswordToKey(userPassword, engineId);
-			HMACSHA512 sha = new HMACSHA512(authKey);
+			using HMACSHA512 sha = new HMACSHA512(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			sha.Clear(); // release resources
@@ -104,7 +104,7 @@ namespace SnmpSharpNet
 		/// <returns>True on authentication success, otherwise false</returns>
 		public bool authenticateIncomingMsg(byte[] authKey, byte[] authenticationParameters, MutableByte wholeMessage)
 		{
-			HMACSHA512 sha = new HMACSHA512(authKey);
+			using HMACSHA512 sha = new HMACSHA512(authKey);
 			byte[] hash = sha.ComputeHash(wholeMessage);
 			MutableByte myhash = new MutableByte(hash, authenticationLength);
 			sha.Clear(); // release resources
@@ -129,7 +129,7 @@ namespace SnmpSharpNet
 
 			int password_index = 0;
 			int count = 0;
-			SHA512 sha = new SHA512CryptoServiceProvider();
+			using SHA512 sha = new SHA512CryptoServiceProvider();
 
 			/* Use while loop until we've done 1 Megabyte */
 			byte[] sourceBuffer = new byte[1048576];
@@ -189,7 +189,7 @@ namespace SnmpSharpNet
 		/// <returns>Hash value</returns>
 		public byte[] ComputeHash(byte[] data, int offset, int count)
 		{
-			SHA512 sha = new SHA512CryptoServiceProvider();
+			using SHA512 sha = new SHA512CryptoServiceProvider();
 			byte[] res = sha.ComputeHash(data, offset, count);
 			sha.Clear();
 			return res;
