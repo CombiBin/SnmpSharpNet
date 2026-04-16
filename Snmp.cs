@@ -20,8 +20,7 @@ namespace SnmpSharpNet
 		/// <summary>
 		/// Constructor
 		/// </summary>
-		public Snmp()
-			:base()
+		public Snmp(bool useV6) : base(useV6)
 		{
 			_response = null;
 			_target = null;
